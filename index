@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Phonological Process Assessment Tool</title>
+
+  <style>
+
+    body {
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+      line-height: 1.6;
+
+      color: #333;
+
+      max-width: 1200px;
+
+      margin: 0 auto;
+
+      padding: 20px;
+
+      background-color: #f5f5f5;
+
+    }
+
+    header {
+
+      background-color: #3a7ca5;
+
+      color: white;
+
+      padding: 20px;
+
+      border-radius: 8px;
+
+      margin-bottom: 20px;
+
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    }
+
+    h1 {
+
+      margin: 0;
+
+      font-size: 28px;
+
+    }
+
+    .main-container {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 20px;
+
+      background-color: white;
+
+      padding: 20px;
+
+      border-radius: 8px;
+
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    }
+
+    .assessment-card {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 15px;
+
+      padding: 20px;
+
+      border: 1px solid #ddd;
+
+      border-radius: 8px;
+
+      background-color: #f9f9f9;
+
+    }
+
+    .word-container {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 20px;
+
+      font-size: 24px;
+
+      background-color: #e6f2ff;
+
+      padding: 15px;
+
+      border-radius: 8px;
+
+    }
+
+    .word {
+
+      font-weight: bold;
+
+      font-size: 42px;
+
+      color: #155724;
+
+    }
+
+    .ipa {
+
+      color: #333;
+
+      font-style: italic;
+
+      font-size: 36px;
+
+      font-weight: bold;
+
+    }
+
+    .instruction {
+
+      font-size: 18px;
+
+      margin-top: 10px;
+
+      color: #555;
+
+    }
+
+    .process-list {
+
+      display: grid;
+
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+      gap: 15px;
+
+    }
+
+    .process-item {
+
+      display: flex;
+
+      align-items: center;
+
+      padding: 15px;
+
+      border: 1px solid #ddd;
+
+      border-radius: 4px;
+
+      background-color: white;
+
+      cursor: pointer;
+
+      transition: background-color 0.2s;
+
+    }
+
+    .process-item:hover {
+
+      background-color: #f0f8ff;
+
+    }
+
+    .process-item.selected {
+
+      background-color: #d4edda;
+
+      border-color: #c3e6cb;
+
+    }
+
+    .process-ipa {
+
+      font-size: 28px;
+
+      font-weight: bold;
+
+      font-style: italic;
+
+      color: #155724;
+
+    }
+
+    .process-names {
+
+      font-size: 14px;
+
+      color: #666;
+
+      margin-top: 8px;
+
+    }
+
+    .navigation {
+
+      display: flex;
+
+      justify-content: space-between;
+
+      margin-top: 20px;
+
+    }
+
+    button {
+
+      padding: 12px 20px;
+
+      background-color: #3a7ca5;
+
+      color: white;
+
+      border: none;
+
+      border-radius: 4px;
+
+      cursor: pointer;
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+    }
+
+    button:hover {
+
+      background-color: #2d6187;
+
+    }
+
+    button:disabled {
+
+      background-color: #cccccc;
+
+      cursor: not-allowed;
+
+    }
+
+    .results-container {
+
+      display: none;
+
+      flex-direction: column;
+
+      gap: 15px;
+
+    }
+
+    .results-table {
+
+      width: 100%;
+
+      border-collapse: collapse;
+
+    }
+
+    .results-table th, .results-table td {
+
+      padding: 12px;
+
+      border: 1px solid #ddd;
+
+      text-align: left;
+
+      font-size: 16px;
+
+    }
+
+    .results-table th {
+
+      background-color: #f2f2f2;
+
+      font-weight: bold;
+
+    }
+
+    .progress-bar-container {
+
+      width: 100%;
+
+      background-color: #e0e0e0;
+
+      border-radius: 4px;
+
+      margin: 10px 0;
+
+    }
+
+    .progress-bar {
+
+      height: 24px;
+
+      background-color: #4CAF50;
+
+      border-radius: 4px;
+
+      text-align: center;
+
+      line-height: 24px;
+
+      color: white;
+
+      font-weight: bold;
+
+    }
+
+    .print-button {
+
+      background-color: #28a745;
+
+    }
+
+    .reset-button {
+
+      background-color: #dc3545;
+
+    }
+
+    @media print {
+
+      .no-print {
+
+        display: none !important;
+
+      }
+
+      button {
+
+        display: none !important;
+
+      }
+
+      body {
+
+        padding: 0;
+
+        background-color: white;
+
+      }
+
+      .main-container {
+
+        box-shadow: none;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <header>
+
+    <h1>Phonological Process Assessment Tool</h1>
+
+  </header>
+
+ 
+
+  <div class="main-container">
+
+    <!-- Progress Tracking -->
+
+    <div class="progress-bar-container" id="progressContainer">
+
+      <div id="progressBar" class="progress-bar" style="width: 0%">0%</div>
+
+    </div>
+
+ 
+
+    <!-- Assessment Card -->
+
+    <div class="assessment-card" id="assessmentCard">
+
+      <div class="word-container">
+
+        <div class="word" id="currentWord">dog</div>
+
+        <div class="ipa" id="currentIPA">/dɒɡ/</div>
+
+      </div>
+
+     
+
+      <div class="instruction">
+
+        Click the IPA forms that match the client's production (select all that apply):
+
+      </div>
+
+     
+
+      <div class="process-list" id="processList">
+
+        <!-- Process items will be inserted here dynamically -->
+
+      </div>
+
+     
+
+      <div class="navigation">
+
+        <button id="prevButton" disabled>Previous</button>
+
+        <button id="nextButton">Next</button>
+
+      </div>
+
+    </div>
+
+ 
+
+    <!-- Results Section -->
+
+    <div class="results-container" id="resultsContainer">
+
+      <h2>Assessment Results</h2>
+
+     
+
+      <h3>Process Occurrence Summary</h3>
+
+      <table class="results-table" id="resultsTable">
+
+        <thead>
+
+          <tr>
+
+            <th>Phonological Process</th>
+
+            <th>Occurrences</th>
+
+            <th>Opportunities</th>
+
+            <th>Percentage</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="resultsBody">
+
+          <!-- Results will be inserted here dynamically -->
+
+        </tbody>
+
+      </table>
+
+     
+
+      <h3>Detailed Word Analysis</h3>
+
+      <table class="results-table" id="detailedTable">
+
+        <thead>
+
+          <tr>
+
+            <th>Word</th>
+
+            <th>Target IPA</th>
+
+            <th>Processes Present</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="detailedBody">
+
+          <!-- Detailed results will be inserted here dynamically -->
+
+        </tbody>
+
+      </table>
+
+     
+
+      <div class="navigation no-print">
+
+        <button id="printButton" class="print-button">Print Results</button>
+
+        <button id="resetButton" class="reset-button">New Assessment</button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+ 
+
+  <script>
+
+    // Assessment data - this is our word and process data from the CSV files
+
+    const assessmentData = [
+
+      {
+
+        word: "dog",
+
+        originalIpa: "/dɒɡ/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/dɒ/" },
+
+          { name: "Backing", processedIpa: "/ɡɒɡ/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ɒɡ/" },
+
+          { name: "Assimilation", processedIpa: "/ɡɒɡ/" },
+
+          { name: "Labialization", processedIpa: "/bɒɡ/" },
+
+          { name: "Final Consonant Devoicing", processedIpa: "/dɒk/" },
+
+          { name: "Prevocalic Devoicing", processedIpa: "/tɒɡ/" },
+
+          { name: "Initial Consonant Devoicing", processedIpa: "/tɒɡ/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "bed",
+
+        originalIpa: "/bɛd/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/bɛ/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ɛd/" },
+
+          { name: "Assimilation", processedIpa: "/dɛd/" },
+
+          { name: "Final Consonant Devoicing", processedIpa: "/bɛt/" },
+
+          { name: "Prevocalic Devoicing", processedIpa: "/pɛd/" },
+
+          { name: "Initial Consonant Devoicing", processedIpa: "/pɛd/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "zip",
+
+        originalIpa: "/zɪp/",
+
+        processes: [
+
+          { name: "Stopping", processedIpa: "/dɪp/" },
+
+          { name: "Affrication", processedIpa: "/dʒɪp/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ɪp/" },
+
+          { name: "Labialization", processedIpa: "/vɪp/" },
+
+          { name: "Prevocalic Devoicing", processedIpa: "/sɪp/" },
+
+          { name: "Initial Consonant Devoicing", processedIpa: "/sɪp/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "sun",
+
+        originalIpa: "/sʌn/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/sʌ/" },
+
+          { name: "Stopping", processedIpa: "/tʌn/" },
+
+          { name: "Affrication", processedIpa: "/tʃʌn/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ʌn/" },
+
+          { name: "Labialization", processedIpa: "/fʌn/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "cup",
+
+        originalIpa: "/kʌp/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/kʌ/" },
+
+          { name: "Velar Fronting", processedIpa: "/tʌp/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ʌp/" },
+
+          { name: "Assimilation", processedIpa: "/pʌp/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "pig",
+
+        originalIpa: "/pɪɡ/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/pɪ/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ɪɡ/" },
+
+          { name: "Assimilation", processedIpa: "/bɪɡ/" },
+
+          { name: "Final Consonant Devoicing", processedIpa: "/pɪk/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "fish",
+
+        originalIpa: "/fɪʃ/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/fɪ/" },
+
+          { name: "Stopping", processedIpa: "/pɪʃ/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ɪʃ/" },
+
+          { name: "Vocalization", processedIpa: "/wɪʃ/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "sock",
+
+        originalIpa: "/sɒk/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/sɒ/" },
+
+          { name: "Stopping", processedIpa: "/tɒk/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/ɒk/" },
+
+          { name: "Affrication", processedIpa: "/tʃɒk/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "cat",
+
+        originalIpa: "/kæt/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/kæ/" },
+
+          { name: "Velar Fronting", processedIpa: "/tæt/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/æt/" }
+
+        ]
+
+      },
+
+      {
+
+        word: "man",
+
+        originalIpa: "/mæn/",
+
+        processes: [
+
+          { name: "Final Consonant Deletion", processedIpa: "/mæ/" },
+
+          { name: "Initial Consonant Deletion", processedIpa: "/æn/" },
+
+          { name: "Denasalization", processedIpa: "/bæn/" }
+
+        ]
+
+      }
+
+    ];
+
+ 
+
+    // Preprocess the data to group processes by unique IPAs
+
+    function preprocessAssessmentData(data) {
+
+      return data.map(item => {
+
+        const uniqueIpaMap = {};
+
+       
+
+        // Group processes by their IPA representation
+
+        item.processes.forEach(process => {
+
+          if (!uniqueIpaMap[process.processedIpa]) {
+
+            uniqueIpaMap[process.processedIpa] = {
+
+              processedIpa: process.processedIpa,
+
+              processNames: [process.name],
+
+              selected: false
+
+            };
+
+          } else {
+
+            uniqueIpaMap[process.processedIpa].processNames.push(process.name);
+
+          }
+
+        });
+
+       
+
+        return {
+
+          word: item.word,
+
+          originalIpa: item.originalIpa,
+
+          uniqueProcesses: Object.values(uniqueIpaMap)
+
+        };
+
+      });
+
+    }
+
+ 
+
+    // Processed assessment data with unique IPAs
+
+    const processedData = preprocessAssessmentData(assessmentData);
+
+ 
+
+    // Variables to track state
+
+    let currentWordIndex = 0;
+
+    let assessmentResults = [];
+
+ 
+
+    // Initialize results array
+
+    function initializeResults() {
+
+      assessmentResults = assessmentData.map(item => ({
+
+        word: item.word,
+
+        originalIpa: item.originalIpa,
+
+        processResults: item.processes.map(process => ({
+
+          name: process.name,
+
+          processedIpa: process.processedIpa,
+
+          present: false
+
+        }))
+
+      }));
+
+    }
+
+ 
+
+    // DOM Elements
+
+    const progressContainer = document.getElementById('progressContainer');
+
+    const progressBar = document.getElementById('progressBar');
+
+    const assessmentCard = document.getElementById('assessmentCard');
+
+    const currentWordElement = document.getElementById('currentWord');
+
+    const currentIPAElement = document.getElementById('currentIPA');
+
+    const processListElement = document.getElementById('processList');
+
+    const resultsContainer = document.getElementById('resultsContainer');
+
+    const resultsBody = document.getElementById('resultsBody');
+
+    const detailedBody = document.getElementById('detailedBody');
+
+    const prevButton = document.getElementById('prevButton');
+
+    const nextButton = document.getElementById('nextButton');
+
+    const printButton = document.getElementById('printButton');
+
+    const resetButton = document.getElementById('resetButton');
+
+ 
+
+    // Initialize results
+
+    initializeResults();
+
+   
+
+    // Display first word
+
+    displayCurrentWord();
+
+ 
+
+    // Display the current word and its processes
+
+    function displayCurrentWord() {
+
+      const currentWord = processedData[currentWordIndex];
+
+     
+
+      // Update the word and IPA
+
+      currentWordElement.textContent = currentWord.word;
+
+      currentIPAElement.textContent = currentWord.originalIpa;
+
+     
+
+      // Clear the process list
+
+      processListElement.innerHTML = '';
+
+     
+
+      // Add each unique IPA option
+
+      currentWord.uniqueProcesses.forEach((process, index) => {
+
+        const processItem = document.createElement('div');
+
+        processItem.className = 'process-item';
+
+        processItem.dataset.index = index;
+
+        processItem.dataset.ipa = process.processedIpa;
+
+       
+
+        if (process.selected) {
+
+          processItem.classList.add('selected');
+
+        }
+
+       
+
+        const processIPA = document.createElement('div');
+
+        processIPA.className = 'process-ipa';
+
+        processIPA.textContent = process.processedIpa;
+
+       
+
+        const processNames = document.createElement('div');
+
+        processNames.className = 'process-names';
+
+        processNames.textContent = process.processNames.join(', ');
+
+       
+
+        processItem.appendChild(processIPA);
+
+        processItem.appendChild(processNames);
+
+       
+
+        // Add click event to toggle selection
+
+        processItem.addEventListener('click', function() {
+
+          this.classList.toggle('selected');
+
+          processedData[currentWordIndex].uniqueProcesses[index].selected = this.classList.contains('selected');
+
+        });
+
+       
+
+        processListElement.appendChild(processItem);
+
+      });
+
+     
+
+      // Update navigation buttons
+
+      prevButton.disabled = currentWordIndex === 0;
+
+      nextButton.textContent = currentWordIndex === processedData.length - 1 ? 'Complete Assessment' : 'Next';
+
+     
+
+      // Update progress bar
+
+      const progressPercentage = Math.round(((currentWordIndex + 1) / processedData.length) * 100);
+
+      progressBar.style.width = `${progressPercentage}%`;
+
+      progressBar.textContent = `${progressPercentage}% (${currentWordIndex + 1}/${processedData.length})`;
+
+    }
+
+ 
+
+    // Save the current word's results
+
+    function saveCurrentWordResults() {
+
+      const currentWord = processedData[currentWordIndex];
+
+     
+
+      // For each unique process IPA
+
+      currentWord.uniqueProcesses.forEach(uniqueProcess => {
+
+        // Find all original processes with this IPA
+
+        const matchingProcesses = assessmentData[currentWordIndex].processes.filter(
+
+          p => p.processedIpa === uniqueProcess.processedIpa
+
+        );
+
+       
+
+        // Set all matching processes to the selected state
+
+        matchingProcesses.forEach(process => {
+
+          const resultIndex = assessmentResults[currentWordIndex].processResults.findIndex(
+
+            pr => pr.name === process.name && pr.processedIpa === process.processedIpa
+
+          );
+
+         
+
+          if (resultIndex !== -1) {
+
+            assessmentResults[currentWordIndex].processResults[resultIndex].present = uniqueProcess.selected;
+
+          }
+
+        });
+
+      });
+
+    }
+
+ 
+
+    // Handle navigation button clicks
+
+    prevButton.addEventListener('click', function() {
+
+      saveCurrentWordResults();
+
+      currentWordIndex--;
+
+      displayCurrentWord();
+
+    });
+
+ 
+
+    nextButton.addEventListener('click', function() {
+
+      saveCurrentWordResults();
+
+     
+
+      if (currentWordIndex === processedData.length - 1) {
+
+        // This is the last word, complete the assessment
+
+        showResults();
+
+      } else {
+
+        currentWordIndex++;
+
+        displayCurrentWord();
+
+      }
+
+    });
+
+ 
+
+    // Generate and display the results
+
+    function showResults() {
+
+      // Hide assessment, show results
+
+      assessmentCard.style.display = 'none';
+
+      progressContainer.style.display = 'none';
+
+      resultsContainer.style.display = 'flex';
+
+     
+
+      // Calculate process occurrence rates
+
+      const processStats = {};
+
+     
+
+      // Initialize counts for each process
+
+      assessmentResults.forEach(wordResult => {
+
+        wordResult.processResults.forEach(processResult => {
+
+          if (!processStats[processResult.name]) {
+
+            processStats[processResult.name] = {
+
+              occurrences: 0,
+
+              opportunities: 0
+
+            };
+
+          }
+
+         
+
+          processStats[processResult.name].opportunities++;
+
+          if (processResult.present) {
+
+            processStats[processResult.name].occurrences++;
+
+          }
+
+        });
+
+      });
+
+     
+
+      // Sort processes by occurrence percentage (highest first)
+
+      const sortedProcesses = Object.keys(processStats).sort((a, b) => {
+
+        const percentA = processStats[a].occurrences / processStats[a].opportunities;
+
+        const percentB = processStats[b].occurrences / processStats[b].opportunities;
+
+        return percentB - percentA;
+
+      });
+
+     
+
+      // Generate summary table
+
+      resultsBody.innerHTML = '';
+
+      sortedProcesses.forEach(processName => {
+
+        const stats = processStats[processName];
+
+        const percentage = Math.round((stats.occurrences / stats.opportunities) * 100);
+
+       
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+
+          <td>${processName}</td>
+
+          <td>${stats.occurrences}</td>
+
+          <td>${stats.opportunities}</td>
+
+          <td>${percentage}%</td>
+
+        `;
+
+       
+
+        resultsBody.appendChild(row);
+
+      });
+
+     
+
+      // Generate detailed table
+
+      detailedBody.innerHTML = '';
+
+      assessmentResults.forEach(wordResult => {
+
+        const presentProcesses = wordResult.processResults
+
+          .filter(process => process.present)
+
+          .map(process => `${process.name} (${process.processedIpa})`)
+
+          .join(', ');
+
+       
+
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+
+          <td>${wordResult.word}</td>
+
+          <td>${wordResult.originalIpa}</td>
+
+          <td>${presentProcesses || 'None'}</td>
+
+        `;
+
+       
+
+        detailedBody.appendChild(row);
+
+      });
+
+    }
+
+ 
+
+    // Print results
+
+    printButton.addEventListener('click', function() {
+
+      window.print();
+
+    });
+
+ 
+
+    // Reset application
+
+    resetButton.addEventListener('click', function() {
+
+      // Reset state
+
+      currentWordIndex = 0;
+
+     
+
+      // Reset processed data
+
+      processedData.forEach(word => {
+
+        word.uniqueProcesses.forEach(process => {
+
+          process.selected = false;
+
+        });
+
+      });
+
+     
+
+      // Reset results
+
+      initializeResults();
+
+     
+
+      // Reset UI
+
+      resultsContainer.style.display = 'none';
+
+      assessmentCard.style.display = 'flex';
+
+      progressContainer.style.display = 'block';
+
+     
+
+      // Display first word
+
+      displayCurrentWord();
+
+    });
+
+  </script>
+
+</body>
+
+</html>
